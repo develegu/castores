@@ -1,0 +1,199 @@
+<style>
+
+  .toolbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    background-color: #1976d2;
+    color: white;
+    font-weight: 600;
+  }
+
+  .content {
+    display: flex;
+    margin: 82px auto 32px;
+    padding: 0 16px;
+    max-width: 900px;
+    flex-direction: column;
+    align-items: center;
+  }
+
+</style>
+
+
+<!------------- Toolbar -->
+<div class="toolbar" role="banner">
+
+  <h1 style="margin-left: 30px; margin-top: 8px;">
+    Inventario de tazas
+  </h1>
+
+</div>
+
+
+
+<!------------- Content-->
+<div class="content" role="main">
+
+  <form [formGroup]="IngresoTazasForm" autocomplete="off" novalidate>
+
+    <!----------------------------- Card agregar inventario de tazasa -->
+    <mat-card class="example-card">
+
+
+      <!----------------- Titulos -->
+      <mat-card-header>
+        <mat-card-title>Agregar inventario</mat-card-title>
+      </mat-card-header>
+
+
+
+      <!---------------- Card input fields -->
+      <mat-card-content>
+
+        <!------------------------------- Input calidad de la taza -->
+        <mat-form-field appearance="fill">
+          <mat-label>Calidad</mat-label>
+          <select matNativeControl formControlName="calidad">
+            <option value="alta">Alta</option>
+            <option value="baja">Baja</option>
+          </select>
+          <mat-error *ngIf="ErrorIngresoTazas('calidad', 'required')">Ingresa una opción</mat-error>
+        </mat-form-field>
+
+
+        <!------------------------------- Input color de la taza -->
+        <mat-form-field class="example-full-width" appearance="fill" style="margin-left: 10px;">
+          <mat-label>Color</mat-label>
+          <input matInput placeholder="Ex. roja, verde, café, gris, etc" formControlName="color" type="text">
+          <mat-error *ngIf="ErrorIngresoTazas('color', 'required')">Ingresa color</mat-error>
+        </mat-form-field>
+
+
+
+
+
+        <!------------------------------- Input dimensiones de la taza -->
+        <mat-form-field class="example-full-width" appearance="fill">
+          <mat-label>Dimensiones</mat-label>
+          <input matInput type="text" formControlName="dimensiones">
+          <mat-error *ngIf="ErrorIngresoTazas('dimensiones', 'required')">Ingresa dimensiones</mat-error>
+        </mat-form-field>
+
+
+        <!------------------------------- Input capacidad de la taza -->
+        <mat-form-field class="example-full-width" appearance="fill" style="margin-left: 10px;">
+          <mat-label>Capacidad (ml)</mat-label>
+          <input matInput placeholder="125 ml, 250 ml, 455ml" formControlName="capacidad" type="number">
+          <mat-error *ngIf="ErrorIngresoTazas('capacidad', 'required')">Ingresa capacidad</mat-error>
+        </mat-form-field>
+
+
+
+
+
+        <!------------------------------- Input modelo de la taza -->
+        <mat-form-field class="example-full-width" appearance="fill">
+          <mat-label>Modelo</mat-label>
+          <input matInput formControlName="modelo" type="text">
+          <mat-error *ngIf="ErrorIngresoTazas('modelo', 'required')">Ingresa modelo</mat-error>
+        </mat-form-field>
+
+
+        <!------------------------------- Input material de la taza -->
+        <mat-form-field class="example-full-width" appearance="fill" style="margin-left: 10px;">
+          <mat-label>Material</mat-label>
+          <input matInput formControlName="material" type="text">
+          <mat-error *ngIf="ErrorIngresoTazas('material', 'required')">Ingresa material</mat-error>
+        </mat-form-field>
+
+
+
+
+        <!------------------------------- Input cantidad de tazas -->
+        <mat-form-field class="example-full-width" appearance="fill">
+          <mat-label>Cantidad</mat-label>
+          <input matInput formControlName="cantidad" type="number">
+          <mat-error *ngIf="ErrorIngresoTazas('cantidad', 'required')">Ingresa cantidad</mat-error>
+        </mat-form-field>
+
+      </mat-card-content>
+
+
+
+      <!----------------- Btn agregar inventario -->
+      <mat-card-actions>
+        <button mat-raised-button color="primary" [disabled]="!IngresoTazasForm.valid"
+          (click)="AgregarInventario()">Ingresar
+          inventario</button>
+      </mat-card-actions>
+
+
+    </mat-card>
+
+  </form>
+
+
+
+
+  <!------------------------------------------ CARD VENTA DE TAZAS -->
+  <form [formGroup]="VentaTazasForm" autocomplete="off" novalidate style="margin-top: 50px;">
+
+    <!----------------------------- Card agregar inventario de tazasa -->
+    <mat-card class="example-card">
+
+
+      <!----------------- Titulos -->
+      <mat-card-header>
+        <mat-card-title>Venta de tazas</mat-card-title>
+      </mat-card-header>
+
+
+
+      <!---------------- Card input fields -->
+      <mat-card-content>
+
+        <!------------------------------- Input calidad de la taza -->
+        <mat-form-field appearance="fill">
+          <mat-label>Calidad</mat-label>
+          <select matNativeControl formControlName="calidad">
+            <option value="alta">Alta</option>
+            <option value="baja">Baja</option>
+          </select>
+          <mat-error *ngIf="ErrorVentaTazas('calidad', 'required')">Ingresa una opción</mat-error>
+          <mat-error *ngIf="ErrorVentaTazas('calidad', 'min')">Ingresa una opción</mat-error>
+
+        </mat-form-field>
+
+
+
+        <!------------------------------- Input material de la taza -->
+        <mat-form-field class="example-full-width" appearance="fill">
+          <mat-label>Cantidad</mat-label>
+          <input matInput formControlName="cantidad" type="number" min="0">
+          <mat-error *ngIf="ErrorVentaTazas('cantidad', 'required')">Ingresa cantidad</mat-error>
+          <mat-hint *ngIf="ValidarCantidadDeTazas()">{{ ValidarCantidadDeTazas() }}</mat-hint>
+
+        </mat-form-field>
+
+      </mat-card-content>
+
+
+
+      <!----------------- Btn agregar inventario -->
+      <mat-card-actions>
+        <button mat-raised-button color="primary" [disabled]="!VentaTazasForm.valid" (click)="VentaDeTaza()">Ingresar
+          inventario</button>
+      </mat-card-actions>
+
+
+    </mat-card>
+  </form>
+
+
+
+</div>
